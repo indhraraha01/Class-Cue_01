@@ -29,6 +29,7 @@ Build the first polished, viewable foundation of Class Cue, a teacher-first prod
 - 2026-06-16: Added saved calendar day/month editing, calculated pulse rules, assignment-aware grade saving, and in-app student/subject forms with archive and delete actions.
 - 2026-06-16: Synced calendar persistence back into shared workspace state so schedule changes remain visible after navigation.
 - 2026-06-16: Added dated attendance history with session-duration absence totals, a compact review queue, assignment edit/delete with in-app confirmation, saved per-assignment grade views, duplicate Student ID warnings, and calendar save synchronization.
+- 2026-08-29: Removed the duplicate "Assignments" block in the session Assignment tab and converted the Assignment Manager's New/Edit assignment form into a centered overlay modal.
 
 ## Prioritized backlog
 ### P0
