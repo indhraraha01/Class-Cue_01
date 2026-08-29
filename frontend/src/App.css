@@ -13,7 +13,7 @@
 .calendar-editor-modal{background:#fff;width:min(680px,100%);max-height:90vh;overflow:auto;border-radius:9px;padding:30px;position:relative;box-shadow:0 20px 60px rgba(28,36,33,.2)}
 .calendar-editor-modal .form-grid select{display:block;width:100%;margin-top:7px;padding:10px;font-size:12px;border-radius:4px}
 .calendar-editor-modal .form-grid input{display:block;width:100%;border:1px solid var(--line);padding:10px;border-radius:4px;margin-top:7px;font-size:12px;outline-color:var(--coral)}
-.calendar-editor-modal .primary{margin-top:22px}
+.calendar-editor-modal .primary{margin-top:22px}.field-error{display:block;color:#c9684e;font-size:10px;font-weight:600;margin-top:6px}
 
 .profile-hero{display:flex;gap:15px;align-items:center}
 .profile-hero-body{flex:1;min-width:0}
