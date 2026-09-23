@@ -101,3 +101,70 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+user_problem_statement: "Add authentication (Signup/Login/Logout) + a Try Demo option to the existing Class Cue app, with strict per-user data isolation. Protect existing pages; demo uses built-in sample data (isolated, client-side); new registered users start with empty students/subjects; do not change unrelated existing functionality."
+
+backend:
+  - task: "Auth signup/login/me (JWT + bcrypt, UUIDs)"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added POST /api/auth/signup, POST /api/auth/login, GET /api/auth/me. bcrypt password hashing, PyJWT HS256 bearer tokens (7d), JWT_SECRET from env. Users stored in 'users' collection with UUID id, unique index on email. Verified basic flow via curl (signup/login/me/duplicate/invalid)."
+  - task: "Per-user state isolation on /api/state"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET/PUT /api/state now require auth (Depends get_current_user) and are scoped by user_id in new 'user_states' collection. Unauthenticated -> 401. New user gets empty AppState. Old shared app_state 'class-cue' doc left untouched (orphaned)."
+
+frontend:
+  - task: "Login/Signup/Logout + Try Demo gate"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added Root auth gate + AuthScreen (login/signup toggle + Try Demo). Token in localStorage cc_token; demo flag in sessionStorage cc_demo. Logout button in topbar. App wrapped; unauthenticated users see AuthScreen. NOT YET UI-TESTED (awaiting user permission)."
+  - task: "Demo isolation + empty new-user state"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Demo uses in-code seed, never calls /api/state (client-side only). Auth users load/persist via /api/state with Bearer header; removed the old seed-merge so new users stay empty. Added Dashboard empty-state guard so empty accounts don't crash."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Auth signup/login/me (JWT + bcrypt, UUIDs)"
+    - "Per-user state isolation on /api/state"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: "Please test the BACKEND auth + data isolation only. Focus: (1) signup creates user + returns token; new user's GET /api/state returns all-empty arrays. (2) login with correct/incorrect creds. (3) /api/auth/me with/without token. (4) /api/state GET/PUT require auth (401 without Bearer). (5) DATA ISOLATION: create User A, add data via PUT /api/state; create User B, confirm B's GET /api/state is empty and does not see A's data; confirm A still has its own data. (6) duplicate email signup -> 400. Pre-seeded test user: teacher@classcue.com / Test1234 (see /app/memory/test_credentials.md). Do NOT test frontend."
